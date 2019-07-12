@@ -1,5 +1,13 @@
 # pymongo-project
 
+## 0. Intro
+En este ejercicio se pide seleccionar la ubicación de nuestra nueva sede en función de algunos parámetros a partir de una base de datos dada que contiene datos geoespaciales. La nueva sede es del departamento de videjuegos y queremos que haya servicios que gusten a nuestros empleados así como otras empresas de videjuegos exitosas. El criterio de definición de éxito será: 
+* empresa que lleve abierta desde antes de 2012
+* empresa con más de 500 empleados
+
+
+En nuestro caso vamos a seleccionar las empresas de videjuegos con más
+
 ## 1. Installation
 
 ### 1.1. Installation Mongo
@@ -63,7 +71,41 @@ mongoimport --db db_companies --collection companies companies.json
 
 ## 3. pymongo y filtrado
 
+### 3.1 requirements
+```
+pip3 install pymongo
+```
+
 Ahora abrimos un jupyter notebook
 ```
 jupyter notebook
+```
+
+### 3.2 Conexión con la base de datos
+
+```Python
+# imports
+from pymongo import MongoClient
+import pandas as pd
+
+# conexión con  mongo
+client = MongoClient("mongodb://localhost:27017/")
+
+# conexión con la base de datos "db_companies"
+db = client.db_companies
+
+#coleción companies
+collection_companies = db.companies
+
+# query pidiendo TODO
+query = collection_companies.find()
+
+# convertimos a pandas.DataFrame
+df = pd.DataFrame(query)
+```
+
+### 3.3 Filtramos 
+El ejercicio pide reducir el número de empresas según el criterio. En compass se puede hacer
+```
+{$and:[{number_of_employees: {$gt: 50}}, {founded_year: {$lt: 2015}}, { $or: [ {category_code:"design"}, {category_code:"games_video"}, {category_code:"web"} ] } ]}
 ```
