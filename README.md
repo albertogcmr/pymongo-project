@@ -42,7 +42,6 @@ sudo service mongod stop
 5. Iniciar servicio desde cero para dejarlo funcionando
 ```
 sudo service mongod restart
-mongo
 ```
 
 ### 1.2. Installation Compass
