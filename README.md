@@ -1,12 +1,12 @@
 # pymongo-project
 
 ## 0. Intro
-En este ejercicio se pide seleccionar la ubicación de nuestra nueva sede en función de algunos parámetros a partir de una base de datos dada que contiene datos geoespaciales. La nueva sede es del departamento de videjuegos y queremos que haya servicios que gusten a nuestros empleados así como otras empresas de videjuegos exitosas. El criterio de definición de éxito será: 
-* empresa que lleve abierta desde antes de 2012
-* empresa con más de 500 empleados
+En este proyecto se pide seleccionar la ubicación de nuestra nueva sede en función de algunos parámetros a partir de una base de datos dada que contiene datos geoespaciales. La nueva sede es del departamento de videjuegos y queremos que haya servicios que gusten a nuestros empleados así como otras empresas de videjuegos exitosas. El criterio de definición de éxito será: 
+* la empresa haya conseguido una financiación > 1M
+* empresa que lleve abierta desde antes de 2003
+* más de 10 empleados. 
 
-
-En nuestro caso vamos a seleccionar las empresas de videjuegos con más
+En nuestro caso vamos a seleccionar las empresas del tipo: design, web, software, games_video, mobile, enterprise, analytics, search, network_hosting o photo_video. Que son similares o relacionadas con nuestro sector. 
 
 ## 1. Installation
 
@@ -105,7 +105,9 @@ df = pd.DataFrame(query)
 ```
 
 ### 3.3 Filtramos 
-El ejercicio pide reducir el número de empresas según el criterio. En compass se puede hacer
+Como queremos trasladarnos a una sede donde haya empresas similares que hayan triunfado. Reducimos el número de empresas según el criterio descrito en la intro. En compass se puede hacer por ejemplo:
+```c
+{$and:[{number_of_employees: {$gt: 10}}, {founded_year: {$lt: 2003}}, { $or: [ {category_code:"design"}, {category_code:"games_video"}, {category_code:"web"} ] } ]}
 ```
-{$and:[{number_of_employees: {$gt: 50}}, {founded_year: {$lt: 2015}}, { $or: [ {category_code:"design"}, {category_code:"games_video"}, {category_code:"web"} ] } ]}
-```
+
+Pero nuestra query será más compleja para no traernos demasiados valores nulos. 
