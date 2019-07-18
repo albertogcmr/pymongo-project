@@ -71,8 +71,14 @@ mongoimport --db db_companies --collection companies companies.json
 
 ## 3. pymongo y filtrado
 
-### 3.1 requirements
+### 3.0 Inciamos mongodb
+
 ```
+sudo service mongod restart
+```
+
+### 3.1 requirements
+```Python
 pip3 install pymongo
 ```
 
@@ -111,3 +117,45 @@ Como queremos trasladarnos a una sede donde haya empresas similares que hayan tr
 ```
 
 Pero nuestra query será más compleja para no traernos demasiados valores nulos. 
+```c
+companies = collection_companies.find({"$and":[
+                                {"offices": {"$exists": True}},
+                                {"offices": {"$ne": None}}, 
+                                {"category_code": {"$exists": True}},
+                                {"category_code": {"$ne": None}}, 
+                                {"founded_year": {"$exists": True}}, 
+                                {"founded_year": {"$gte": 2003}},
+                                {"deadpooled_year": None},
+                                {"number_of_employees": {"$exists": True}},
+                                {"number_of_employees": {"$gte": 10}},
+                                {"total_money_raised": {"$exists": True}},
+                                {"total_money_raised":{"$ne":None}},
+                                {"total_money_raised": {"$not":{"$size":0}}}, 
+                                {"$or": [
+                                    {"total_money_raised": {"$gte": 1_000_000}},
+                                    {"category_code": "design" } ,
+                                    {"category_code": "web" } , 
+                                    {"category_code": "software" } , 
+                                    {"category_code": "games_video" } , 
+                                    {"category_code": "mobile" } , 
+                                    {"category_code": "enterprise" } ,   
+                                    {"category_code": "analytics" } ,
+                                    {'category_code': "search"},
+                                    {'category_code': "network_hosting"} ,   
+                                    {"category_code": "photo_video" } ,   
+                                    ]} ,
+                                      
+                                ]
+                                },
+                                
+                                # descartamos elementos que no interesan
+                                {"_id": 0, "crunchbase_url": 0, "products": 0, 
+                                 "acquisition": 0, "acquisitions": 0, "video_embeds": 0, 
+                                 "screenshots": 0, "external_links": 0, "partners": 0, 
+                                 "image": 0
+                                }
+                                     )
+```
+
+## 4. Limpieza
+
