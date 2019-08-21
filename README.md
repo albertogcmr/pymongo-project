@@ -77,7 +77,7 @@ sudo service mongod restart
 ```
 
 ### 3.1 requirements
-```Python
+```
 pip3 install pymongo
 ```
 
@@ -88,7 +88,7 @@ jupyter notebook
 
 ### 3.2 Conexión con la base de datos
 
-```Python
+```python
 # imports
 from pymongo import MongoClient
 import pandas as pd
@@ -111,12 +111,12 @@ df = pd.DataFrame(query)
 
 ### 3.3 Filtramos 
 Como queremos trasladarnos a una sede donde haya empresas similares que hayan triunfado. Reducimos el número de empresas según el criterio descrito en la intro. En compass se puede hacer por ejemplo:
-```c
+```python
 {$and:[{number_of_employees: {$gt: 10}}, {founded_year: {$lt: 2003}}, { $or: [ {category_code:"design"}, {category_code:"games_video"}, {category_code:"web"} ] } ]}
 ```
 
 Pero nuestra query será más compleja para no traernos demasiados valores nulos. 
-```c
+```python
 companies = collection_companies.find({"$and":[
                                 {"offices": {"$exists": True}},
                                 {"offices": {"$ne": None}}, 
